@@ -1,0 +1,120 @@
+# Security checks for Nura
+#
+# Four open-source scanners run in parallel, then one gate job reports a single result.
+# The build fails ONLY on critical findings. Lower-severity findings are printed in the
+# job logs so they can be reviewed, but they never block a merge or a deploy.
+#
+#   sast          Semgrep    JS, XSS, secrets and GitHub Actions rules   fails on severity ERROR
+#   dependencies  Trivy      vulnerable packages + misconfigurations     fails on CRITICAL
+#   gitleaks      Gitleaks   secrets anywhere in git history             fails on any leak
+#   trufflehog    TruffleHog secrets anywhere in git history             fails on verified live secrets
+#   security-gate            one required check for branch protection
+#
+# Run the same checks locally:
+#   docker run --rm -v "$PWD:/src" semgrep/semgrep semgrep scan --config p/javascript --config p/xss --config p/secrets --config p/github-actions --metrics=off --severity ERROR --error /src
+#   docker run --rm -v "$PWD:/src" aquasec/trivy fs --scanners vuln,misconfig --severity CRITICAL --exit-code 1 /src
+#   docker run --rm -v "$PWD:/path" zricethezav/gitleaks git /path -v --redact
+#   docker run --rm -v "$PWD:/pwd" trufflesecurity/trufflehog git file:///pwd --results=verified
+#
+# Hardening tip: for production, pin each third-party action and image below to a full
+# commit SHA or digest instead of a tag.
+
+name: Security checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * 1" # every Monday 06:00 UTC, catches new advisories without a push
+
+permissions:
+  contents: read
+
+concurrency:
+  group: security-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sast:
+    name: SAST (Semgrep)
+    runs-on: ubuntu-latest
+    container:
+      image: semgrep/semgrep
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Report all findings (never fails)
+        run: >
+          semgrep scan
+          --config p/javascript --config p/xss --config p/secrets --config p/github-actions
+          --metrics=off
+
+      - name: Fail on critical findings (severity ERROR)
+        run: >
+          semgrep scan
+          --config p/javascript --config p/xss --config p/secrets --config p/github-actions
+          --metrics=off --severity ERROR --error
+
+  dependencies:
+    name: Dependency scan (Trivy)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Report HIGH and CRITICAL (never fails)
+        run: >
+          docker run --rm -v "$PWD:/src" -v trivy-cache:/root/.cache/
+          aquasec/trivy:latest fs --scanners vuln,misconfig
+          --severity HIGH,CRITICAL --exit-code 0 --no-progress /src
+
+      - name: Fail on CRITICAL
+        run: >
+          docker run --rm -v "$PWD:/src" -v trivy-cache:/root/.cache/
+          aquasec/trivy:latest fs --scanners vuln,misconfig
+          --severity CRITICAL --exit-code 1 --no-progress /src
+
+  gitleaks:
+    name: Secret scan (Gitleaks)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history, so secrets in old commits are found too
+
+      - name: Scan git history (any committed secret is critical)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  trufflehog:
+    name: Secret scan (TruffleHog)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fail on verified live secrets
+        uses: trufflesecurity/trufflehog@main
+        with:
+          extra_args: --results=verified
+
+  security-gate:
+    name: Security gate
+    needs: [sast, dependencies, gitleaks, trufflehog]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: All scanners passed
+        env:
+          RESULTS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          echo "Scanner results: $RESULTS"
+          for result in $RESULTS; do
+            if [ "$result" != "success" ]; then
+              echo "::error::A security scanner found a critical issue or did not finish. Open the failed job above for details."
+              exit 1
+            fi
+          done
+          echo "No critical findings."
