@@ -210,25 +210,41 @@
     <section class="section" aria-labelledby="sensor-title">
       <div class="container">
         <div class="reveal">
-          <span class="eyebrow">The sensor</span>
+          <span class="eyebrow">The sensors</span>
           <h2 id="sensor-title">Measure the power, not the sky</h2>
-          <p class="lede">A streetlight doesn't need to know how bright the sun is. It needs to know whether energy is flowing into the battery and whether the lamp is actually glowing. So Nura puts a shunt monitor on the panel wire and one photodiode under the lamp.</p>
+          <p class="lede">A streetlight doesn't need to know how bright the sun is. It needs to know whether energy is flowing into the battery and whether the lamp is actually glowing. So every Nura light carries just two sensors: a current monitor on its power wires and a photodiode under the lamp.</p>
         </div>
-        <div class="table-wrap reveal">
-          <table>
-            <caption>Budget solar sensors compared for a fixed-tilt, sand-exposed, unattended streetlight.</caption>
-            <thead>
-              <tr><th scope="col">Sensor</th><th scope="col" class="num">Cost</th><th scope="col">What it tells us</th><th scope="col">Field fit</th><th scope="col">Verdict</th></tr>
-            </thead>
-            <tbody>
-              <tr class="is-highlight"><td><strong>Shunt monitor (INA3221)</strong></td><td class="num">~$4</td><td>Panel, battery and lamp current + voltage</td><td>Solid-state, sealed in bay</td><td><strong>Primary sensor</strong></td></tr>
-              <tr class="is-highlight"><td><strong>Silicon photodiode (BPW34)</strong></td><td class="num">&lt;$1</td><td>Is the lamp really lit? Dusk / dawn</td><td>Linear, stable in heat, no cadmium</td><td><strong>Lamp check</strong></td></tr>
-              <tr><td>Photoresistor (LDR)</td><td class="num">~$0.05</td><td>Rough light on/off</td><td>Drifts with heat and UV; contains cadmium</td><td>Fallback only</td></tr>
-              <tr><td>Irradiance / tracker module</td><td class="num">$10–12</td><td>Sun direction for tracking</td><td>Moving parts jam with sand; fixed panels don't track</td><td>Not used</td></tr>
-            </tbody>
-          </table>
+        <div class="grid grid--2 reveal">
+          <article class="card compare">
+            <span class="card__index">The main sensor · about $4</span>
+            <h3>INA3221 current and voltage monitor</h3>
+            <dl>
+              <dt>What it measures</dt>
+              <dd>Real power on three wires: the solar panel coming in, the battery charging and draining, and the lamp going out.</dd>
+              <dt>Where it sits</dt>
+              <dd>Inside the sealed electronics box, wired between the charge controller, the battery and the lamp.</dd>
+              <dt>Why it suits the Sahel and East Africa</dt>
+              <dd class="compare__answer">No moving parts and no window to the outside, so sand and rain can't reach it, and it's rated to 125 °C, well above the 60 °C a sealed box reaches in full sun. It also catches what a light sensor misses: a cracked or sand-covered panel reads zero current even on a bright day.</dd>
+              <dt>Setup</dt>
+              <dd>0.05 Ω shunts on the panel and battery wires, 0.1 Ω on the lamp wire. Read every 5 seconds.</dd>
+            </dl>
+          </article>
+          <article class="card compare">
+            <span class="card__index">The lamp check · under $1</span>
+            <h3>BPW34 silicon photodiode</h3>
+            <dl>
+              <dt>What it measures</dt>
+              <dd>Whether light is really coming out of the lamp.</dd>
+              <dt>Where it sits</dt>
+              <dd>Under a short hood on the lamp mount, aimed at the lamp's own pool of light.</dd>
+              <dt>Why it suits the Sahel and East Africa</dt>
+              <dd class="compare__answer">Silicon stays accurate in heat and doesn't wear out in strong sun. Every 10 minutes at night the lamp blinks off for a fifth of a second, too fast for anyone to notice, so moonlight and passing headlights cancel out and only this lamp is measured.</dd>
+              <dt>Setup</dt>
+              <dd>A 1 MΩ resistor into the sensor board's analog input.</dd>
+            </dl>
+          </article>
         </div>
-        <p class="notice reveal">The panel is its own dawn/dusk sensor. Panel voltage above ~8 V means day, and below ~2 V means night, so the lamp schedule needs no extra part.</p>
+        <p class="notice reveal">Nothing else is needed. The solar panel doubles as the dawn and dusk switch: above about 8 V it's day, below about 2 V it's night. A tilt switch and a lid switch report tampering. The reasons for not using a basic light sensor or a sun tracker are in <code>docs/Nebo.md</code> §3.4.</p>
       </div>
     </section>
 

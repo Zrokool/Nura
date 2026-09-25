@@ -1964,3 +1964,24 @@ th,
 td.num {
   white-space: nowrap;
 }
+
+/* Implementation: where it started */
+.origin__grid {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 1rem;
+  align-items: center;
+}
+.origin__grid img {
+  width: 100%;
+  height: auto;
+  max-height: 460px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: var(--ink-800);
+}
+@media (max-width: 520px) {
+  .origin__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
