@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>Nura | The light node</title>
+  <meta name="description" content="How Nura works: a solar streetlight node, a neighbour-ping mesh, AI repair instructions, and city ownership.">
+  <meta name="theme-color" content="#000000">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/D-DIN-Bold.woff" as="font" type="font/woff" crossorigin>
+  <link rel="stylesheet" href="assets/css/nura.css">
+  <script src="assets/js/site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="nav">
+    <div class="container nav__inner">
+      <a class="brand" href="index.html" aria-label="Nura home"><img src="assets/img/logo.svg" alt="" width="26" height="26">NURA</a>
+      <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu"><span></span><span></span><span></span></button>
+      <ul class="nav__links" id="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="ummah.html">Ummah</a></li>
+        <li><a href="nura.html" aria-current="page">Nura</a></li>
+        <li><a href="implementation.html">Implementation</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="hero__bg hero__bg--node" role="img" aria-label="A single Nura light node: a tilted solar panel on a pole above a glowing purple-white lamp"></div>
+      <div class="container">
+        <div class="hero__content">
+          <span class="eyebrow">Nura · The solution</span>
+          <h1>One pole.<br>Its own sun.</h1>
+          <p>Each Nura node makes, stores and spends its own energy. It checks on its neighbours every minute, and when one goes dark, AI tells a local fixer exactly what to bring.</p>
+          <div class="btn-row">
+            <a class="btn btn--primary" href="#how">How it works</a>
+            <a class="btn" href="dashboard.html">Live dashboard</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Components -->
+    <section class="section" id="how" aria-labelledby="how-title">
+      <div class="container">
+        <div class="reveal">
+          <span class="eyebrow">The light node</span>
+          <h2 id="how-title">Four parts. No grid.</h2>
+          <p class="lede">We redesigned the streetlight around parts you can buy today, repair with hand tools and replace one at a time.</p>
+        </div>
+        <ol class="steps reveal">
+          <li>
+            <h3>Harvest</h3>
+            <p>A 30 W monocrystalline panel (21–30% cell efficiency) with a smart MPPT controller. It is waterproof and rated for sandstorms and 2,400 Pa wind, with a lifespan of up to 25 years.</p>
+          </li>
+          <li>
+            <h3>Store</h3>
+            <p>A 12 V 12 Ah LiFePO₄ battery, protected by three-stage charging against overcharge, over-voltage and short circuits. About 123 Wh usable: 1.5 nights on the full schedule, about 2.4 in low-battery mode.</p>
+          </li>
+          <li>
+            <h3>Light</h3>
+            <p>A 10 W, 1,200-lumen, IP65 outdoor LED lamp on a waterproof plug. A failed lamp is unplugged and swapped in about 10 minutes, with no electrician needed.</p>
+          </li>
+          <li>
+            <h3>Sense</h3>
+            <p>An ESP32 + LoRa node with an INA3221 current/voltage monitor on the panel, battery and lamp lines, plus a silicon photodiode that checks the lamp is really lit. It pings the light to its left and right, and reports to the zone gateway.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Mesh -->
+    <section class="section section--panel" aria-labelledby="mesh-title">
+      <div class="container split">
+        <div class="reveal">
+          <span class="eyebrow">Sensor mapping</span>
+          <h2 id="mesh-title">Every light watches its neighbours</h2>
+          <p class="lede">Each light pings only the light to its left and to its right. That is all it takes to map a whole street.</p>
+          <ul class="checklist">
+            <li><span><strong>Outage:</strong> if A can't reach B from the left <em>and</em> C can't reach B from the right, B is out.</span></li>
+            <li><span><strong>Link fault:</strong> if only one side fails, the node is alive and the radio path is blocked. It is flagged, not dispatched.</span></li>
+            <li><span><strong>Lamp fault:</strong> if the node still answers but its photodiode reads dark at night, the lamp has failed while the radio still works.</span></li>
+            <li><span><strong>Segment outage:</strong> two or more neighbours out together usually means vandalism or conflict damage. The case is escalated.</span></li>
+          </ul>
+        </div>
+        <figure class="figure reveal">
+          <div class="diagram-scroll">
+            <svg viewBox="0 0 600 300" role="img" aria-labelledby="mesh-svg-title mesh-svg-desc">
+              <title id="mesh-svg-title">Neighbour ping between streetlights A, B and C</title>
+              <desc id="mesh-svg-desc">Light A pings B to the right and light C pings B to the left. Both pings fail, so B is marked as an outage.</desc>
+              <defs>
+                <radialGradient id="meshHalo"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset=".25" stop-color="#c4b5fd" stop-opacity=".5"/><stop offset="1" stop-color="#8b5cf6" stop-opacity="0"/></radialGradient>
+                <marker id="arrOk" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#a78bfa"/></marker>
+                <marker id="arrBad" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#e5484d"/></marker>
+              </defs>
+              <line x1="20" y1="250" x2="580" y2="250" stroke="#1c1726" stroke-width="18" stroke-linecap="round"/>
+              <!-- poles -->
+              <g stroke="#2a2438" stroke-width="5">
+                <line x1="100" y1="250" x2="100" y2="110"/><line x1="300" y1="250" x2="300" y2="110"/><line x1="500" y1="250" x2="500" y2="110"/>
+              </g>
+              <circle cx="100" cy="110" r="60" fill="url(#meshHalo)"/>
+              <circle cx="500" cy="110" r="60" fill="url(#meshHalo)"/>
+              <circle cx="100" cy="110" r="11" fill="#efe9ff" stroke="#a78bfa" stroke-width="2"/>
+              <circle cx="300" cy="110" r="11" fill="#140608" stroke="#e5484d" stroke-width="2"/>
+              <text x="300" y="114" text-anchor="middle" fill="#e5484d" font-size="12" font-weight="700">✕</text>
+              <circle cx="500" cy="110" r="11" fill="#efe9ff" stroke="#a78bfa" stroke-width="2"/>
+              <!-- pings -->
+              <path d="M120 95 Q200 55 278 92" fill="none" stroke="#e5484d" stroke-width="2" stroke-dasharray="5 5" marker-end="url(#arrBad)"/>
+              <path d="M480 95 Q400 55 322 92" fill="none" stroke="#e5484d" stroke-width="2" stroke-dasharray="5 5" marker-end="url(#arrBad)"/>
+              <path d="M85 125 Q60 150 40 150" fill="none" stroke="#a78bfa" stroke-width="2" stroke-dasharray="5 5" marker-end="url(#arrOk)"/>
+              <path d="M515 125 Q540 150 560 150" fill="none" stroke="#a78bfa" stroke-width="2" stroke-dasharray="5 5" marker-end="url(#arrOk)"/>
+              <g font-size="13" letter-spacing="3" fill="#fff" text-anchor="middle">
+                <text x="100" y="285">LIGHT A</text><text x="300" y="285" fill="#e5484d">LIGHT B · OUT</text><text x="500" y="285">LIGHT C</text>
+              </g>
+              <g font-size="10" letter-spacing="1.5" fill="rgba(244,242,248,.6)" text-anchor="middle">
+                <text x="200" y="45">A → B · NO REPLY</text><text x="400" y="45">C → B · NO REPLY</text>
+              </g>
+            </svg>
+          </div>
+          <figcaption>Both neighbours fail to reach B, so B is declared out. Street ends, which have only one neighbour, also need a missed gateway heartbeat before they are declared out.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- AI -->
+    <section class="section" aria-labelledby="ai-title">
+      <div class="container">
+        <div class="reveal">
+          <span class="eyebrow">AI that dispatches</span>
+          <h2 id="ai-title">From dark pole to repair email</h2>
+          <p class="lede">A free, open-source Ollama model runs on a small computer at the zone gateway, fully offline. Fixed rules decide <em>whether</em> a light is out. The model explains <em>why</em>, and writes the local fixer a plain-language repair guide.</p>
+        </div>
+        <ol class="steps reveal">
+          <li><h3>Ping</h3><p>Every 60 s, each node pings its left and right neighbours and reports its battery, charge current and light level.</p></li>
+          <li><h3>Detect</h3><p>The gateway applies the outage rules. The rules make the decision; the AI is never trusted to decide whether a light is out.</p></li>
+          <li><h3>Diagnose</h3><p>Ollama reads the node's last telemetry. Zero panel current in daylight points to the panel, a battery that won't hold charge to the battery, a dark photodiode to the LED.</p></li>
+          <li><h3>Dispatch</h3><p>An email (or SMS) goes to the zone's local fixer: which pole, the likely cause, step-by-step fix, tools and parts to bring, and safety notes.</p></li>
+          <li><h3>Confirm</h3><p>When both neighbours can ping the repaired node again, the incident closes automatically.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Cost -->
+    <section class="section section--panel" aria-labelledby="cost-title">
+      <div class="container split split--top">
+        <div class="reveal">
+          <span class="eyebrow">Energy per cost</span>
+          <h2 id="cost-title">About $170 in parts, about $250 installed</h2>
+          <p class="lede">Every part is off the shelf, and every price is a prototype estimate at retail. Buying in bulk and assembling locally brings both numbers down.</p>
+          <div class="table-wrap">
+            <table>
+              <caption>Parts per light. Estimates in USD.</caption>
+              <thead><tr><th scope="col">Part</th><th scope="col" class="num">Est.</th></tr></thead>
+              <tbody>
+                <tr><td>30 W panel + MPPT controller</td><td class="num">$65</td></tr>
+                <tr><td>12 V 12 Ah LiFePO₄ battery</td><td class="num">$40</td></tr>
+                <tr><td>10 W 12 V IP65 LED lamp, ~1,200 lumens</td><td class="num">$22</td></tr>
+                <tr><td>M12 IP68 waterproof plug + lamp bolts</td><td class="num">$4</td></tr>
+                <tr><td>ESP32 + LoRa node, 12→5 V converter</td><td class="num">$18</td></tr>
+                <tr><td>INA3221 3-channel shunt monitor + BPW34 photodiode</td><td class="num">$5</td></tr>
+                <tr><td>3D-printed case (ASA, ~400 g)</td><td class="num">$9</td></tr>
+                <tr><td>3-prong clamp hardware, fuses, MOSFET, cable, tamper switch</td><td class="num">$8</td></tr>
+                <tr class="is-highlight"><td><strong>Parts per light</strong></td><td class="num"><strong>≈ $171</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="notice">Energy budget: the 10 W lamp runs at full brightness until 22:00 and at half until dawn, about 75 Wh a night. The sensor node adds 6 Wh, so the need is about 81 Wh a day. Five peak sun hours on 30 W bring in about 120 Wh after losses, or about 84 Wh in heavy dust. The battery stores about 123 Wh usable: 1.5 nights on the full schedule, or about 2.4 nights in low-battery mode.</p>
+        </div>
+        <div class="reveal">
+          <div class="table-wrap">
+            <table>
+              <caption>Installed cost per light, for a 60-light pilot. Estimates in USD.</caption>
+              <thead><tr><th scope="col">Line</th><th scope="col" class="num">Est.</th></tr></thead>
+              <tbody>
+                <tr><td>Parts</td><td class="num">$171</td></tr>
+                <tr><td>Shipping, import duty and fees (15–30%)</td><td class="num">$26–51</td></tr>
+                <tr><td>Bench assembly and install labour (~2.5 person-hours)</td><td class="num">$10–30</td></tr>
+                <tr><td>Share of the zone gateway ($500 ÷ 60 lights)</td><td class="num">$8</td></tr>
+                <tr><td>Spares reserve (~10%)</td><td class="num">$17</td></tr>
+                <tr class="is-highlight"><td><strong>Installed per light</strong></td><td class="num"><strong>≈ $232–277</strong></td></tr>
+                <tr><td>New pole and foundation, only where none exists</td><td class="num">+$60–150</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-wrap table-gap">
+            <table>
+              <caption>Solar kit tiers from the SOLPERK range. 30 W MPPT is the Nura default.</caption>
+              <thead><tr><th scope="col">Solar kit</th><th scope="col" class="num">Price</th><th scope="col" class="num">$/W</th></tr></thead>
+              <tbody>
+                <tr><td>20 W MPPT</td><td class="num">$34.99</td><td class="num">1.75</td></tr>
+                <tr class="is-highlight"><td>30 W MPPT</td><td class="num">$64.99</td><td class="num">2.17</td></tr>
+                <tr><td>30 W PWM + load</td><td class="num">$74.99</td><td class="num">2.50</td></tr>
+                <tr><td>50 W MPPT</td><td class="num">$94.99</td><td class="num">1.90</td></tr>
+                <tr><td>100 W MPPT</td><td class="num">$149.99</td><td class="num">1.50</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="notice">Shipping and duty vary by country and change with sanctions and import rules. Confirm them with a local importer before budgeting.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sensor choice -->
+    <section class="section" aria-labelledby="sensor-title">
+      <div class="container">
+        <div class="reveal">
+          <span class="eyebrow">The sensor</span>
+          <h2 id="sensor-title">Measure the power, not the sky</h2>
+          <p class="lede">A streetlight doesn't need to know how bright the sun is. It needs to know whether energy is flowing into the battery and whether the lamp is actually glowing. So Nura puts a shunt monitor on the panel wire and one photodiode under the lamp.</p>
+        </div>
+        <div class="table-wrap reveal">
+          <table>
+            <caption>Budget solar sensors compared for a fixed-tilt, sand-exposed, unattended streetlight.</caption>
+            <thead>
+              <tr><th scope="col">Sensor</th><th scope="col" class="num">Cost</th><th scope="col">What it tells us</th><th scope="col">Field fit</th><th scope="col">Verdict</th></tr>
+            </thead>
+            <tbody>
+              <tr class="is-highlight"><td><strong>Shunt monitor (INA3221)</strong></td><td class="num">~$4</td><td>Panel, battery and lamp current + voltage</td><td>Solid-state, sealed in bay</td><td><strong>Primary sensor</strong></td></tr>
+              <tr class="is-highlight"><td><strong>Silicon photodiode (BPW34)</strong></td><td class="num">&lt;$1</td><td>Is the lamp really lit? Dusk / dawn</td><td>Linear, stable in heat, no cadmium</td><td><strong>Lamp check</strong></td></tr>
+              <tr><td>Photoresistor (LDR)</td><td class="num">~$0.05</td><td>Rough light on/off</td><td>Drifts with heat and UV; contains cadmium</td><td>Fallback only</td></tr>
+              <tr><td>Irradiance / tracker module</td><td class="num">$10–12</td><td>Sun direction for tracking</td><td>Moving parts jam with sand; fixed panels don't track</td><td>Not used</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="notice reveal">The panel is its own dawn/dusk sensor. Panel voltage above ~8 V means day, and below ~2 V means night, so the lamp schedule needs no extra part.</p>
+      </div>
+    </section>
+
+    <!-- Ownership -->
+    <section class="section" aria-labelledby="own-title">
+      <div class="container split">
+        <div class="reveal">
+          <span class="eyebrow">Created for the people</span>
+          <h2 id="own-title">Owned by the city. Not by a corporation.</h2>
+          <p class="lede">The network, the data and the dashboard belong to the municipality or neighbourhood committee. There are no licences, no cloud bills and no contractor lock-in.</p>
+        </div>
+        <div class="reveal">
+          <ul class="checklist">
+            <li><span><strong>Open hardware:</strong> the parts list and case design are public, so any workshop can build a node.</span></li>
+            <li><span><strong>Offline AI:</strong> Ollama runs on the zone gateway, so there is no subscription and no data leaves the city.</span></li>
+            <li><span><strong>Local fixers:</strong> repair guides are written for a trained resident with hand tools, not a specialist engineer.</span></li>
+            <li><span><strong>Priority zones:</strong> refugee camps, school routes and clinic roads get lit and repaired first.</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Case -->
+    <section class="section section--panel" aria-labelledby="case-title">
+      <div class="container split">
+        <figure class="figure reveal">
+          <svg viewBox="0 0 420 420" role="img" aria-labelledby="case-svg-title case-svg-desc">
+            <title id="case-svg-title">Nura printed case</title>
+            <desc id="case-svg-desc">Side view of the printed enclosure. A tilted solar tray sits on top, an electronics bay sits below it, the 12 V LED lamp hangs underneath on a waterproof plug, and a three-prong clamp grips the metal pole.</desc>
+            <defs>
+              <radialGradient id="caseHalo"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset=".25" stop-color="#c4b5fd" stop-opacity=".45"/><stop offset="1" stop-color="#8b5cf6" stop-opacity="0"/></radialGradient>
+              <pattern id="caseCells" width="14" height="14" patternUnits="userSpaceOnUse"><rect width="14" height="14" fill="none" stroke="#5b3bb3" stroke-width=".7"/></pattern>
+            </defs>
+            <rect x="196" y="150" width="28" height="270" fill="#15121c" stroke="#2a2438"/>
+            <g transform="rotate(-15 210 90)">
+              <rect x="80" y="70" width="260" height="30" fill="#1a1025" stroke="#8b5cf6" stroke-width="2"/>
+              <rect x="86" y="62" width="248" height="10" fill="#2a1d4d"/>
+              <rect x="86" y="62" width="248" height="10" fill="url(#caseCells)"/>
+            </g>
+            <rect x="160" y="120" width="100" height="70" rx="6" fill="#0f0c17" stroke="#a78bfa" stroke-width="1.5"/>
+            <text x="210" y="160" text-anchor="middle" fill="#a78bfa" font-size="10" letter-spacing="2">E-BAY</text>
+            <g stroke="#a78bfa" stroke-width="3" fill="none">
+              <path d="M180 250 L160 250 L160 290 L196 290"/>
+              <path d="M240 250 L260 250 L260 290 L224 290"/>
+              <path d="M210 262 L210 250"/>
+            </g>
+            <circle cx="210" cy="276" r="22" fill="none" stroke="#6d5ba8" stroke-dasharray="3 3"/>
+            <rect x="140" y="190" width="70" height="8" fill="#2a2438"/>
+            <circle cx="125" cy="215" r="80" fill="url(#caseHalo)"/>
+            <rect x="100" y="198" width="50" height="14" rx="7" fill="#fbf9ff"/>
+            <g font-size="10" letter-spacing="1.5" fill="rgba(244,242,248,.7)">
+              <text x="290" y="45">SOLAR TRAY · 15°</text>
+              <text x="270" y="160">ELECTRONICS BAY</text>
+              <text x="20" y="260">12 V LED LAMP</text>
+              <text x="275" y="280">3-PRONG CLAMP</text>
+              <text x="275" y="294">Ø 60–120 MM POLE</text>
+            </g>
+          </svg>
+          <figcaption>Illustration of the parametric model in <code>hardware/nura-case.jscad</code>. You can preview it at openjscad.xyz.</figcaption>
+        </figure>
+        <div class="reveal">
+          <span class="eyebrow">The printed case</span>
+          <h2 id="case-title">Built to grip any pole</h2>
+          <p class="lede">A single 3D-printed enclosure combines the solar tray, sealed electronics bay and plug-in LED lamp mount. A three-prong clamp locks it onto existing metal poles, including ones left standing after the grid failed.</p>
+          <ul class="checklist">
+            <li><span><strong>Parametric:</strong> pole diameter, panel size and tilt are variables in the model.</span></li>
+            <li><span><strong>UV-stable:</strong> printed in ASA or PETG, with gasket grooves to keep out dust and rain.</span></li>
+            <li><span><strong>Tamper-aware:</strong> the clamp uses security screws, and the sensor node reports if the case is opened.</span></li>
+          </ul>
+          <div class="btn-row">
+            <a class="btn btn--primary" href="implementation.html">See the build</a>
+            <a class="btn" href="dashboard.html">Watch the network</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div>
+        <a class="brand" href="index.html" aria-label="Nura home"><img src="assets/img/logo.svg" alt="" width="26" height="26">NURA</a>
+        <p class="footer__slogan">Light up the night. Created for the people.</p>
+      </div>
+      <ul class="footer__links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="ummah.html">Ummah</a></li>
+        <li><a href="nura.html">Nura</a></li>
+        <li><a href="implementation.html">Implementation</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+      </ul>
+      <p class="footer__legal">© <span id="year">2026</span> Nura prototype. Community-owned light infrastructure concept. All dashboard data is simulated.</p>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>Nura | Implementation</title>
+  <meta name="description" content="How a Nura light is built: seven printed parts that fit one 250 mm printer bed, assembled on the pole in four stages.">
+  <meta name="theme-color" content="#000000">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/D-DIN-Bold.woff" as="font" type="font/woff" crossorigin>
+  <link rel="stylesheet" href="assets/css/nura.css">
+  <script src="assets/js/site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="nav">
+    <div class="container nav__inner">
+      <a class="brand" href="index.html" aria-label="Nura home"><img src="assets/img/logo.svg" alt="" width="26" height="26">NURA</a>
+      <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu"><span></span><span></span><span></span></button>
+      <ul class="nav__links" id="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="ummah.html">Ummah</a></li>
+        <li><a href="nura.html">Nura</a></li>
+        <li><a href="implementation.html" aria-current="page">Implementation</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero hero--short">
+      <div class="hero__bg hero__bg--node" role="img" aria-label="A Nura light node on a pole at night"></div>
+      <div class="container">
+        <div class="hero__content">
+          <span class="eyebrow">Implementation</span>
+          <h1>From printer to pole</h1>
+          <p>Seven part designs, one ordinary printer bed, and two people with hand tools. That is everything it takes to build a Nura light.</p>
+          <div class="hero__figure">
+            <span>On the pole</span>
+            <strong>~45</strong><small>minutes per light</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Parts -->
+    <section class="section" aria-labelledby="parts-title">
+      <div class="container">
+        <div class="intro reveal">
+          <span class="eyebrow">What you print</span>
+          <h2 id="parts-title">Twelve pieces, seven designs</h2>
+          <p class="lede">Each part has one job. Print them once, and the only other things you need are a store-bought panel, battery, lamp and a few bolts.</p>
+        </div>
+
+        <figure class="figure figure--wide reveal">
+          <div class="diagram-scroll">
+            <svg viewBox="0 0 560 260" role="img" aria-labelledby="bed-title bed-desc">
+              <title id="bed-title">The three largest parts on a 250 mm printer bed</title>
+              <desc id="bed-desc">Three 250 by 250 millimetre squares. The panel arm, lamp mount and electronics bay each fit inside one square with room to spare.</desc>
+              <g fill="none" stroke="rgba(255,255,255,.25)" stroke-dasharray="4 4">
+                <rect x="10" y="30" width="170" height="170"/>
+                <rect x="195" y="30" width="170" height="170"/>
+                <rect x="380" y="30" width="170" height="170"/>
+              </g>
+              <g fill="rgba(139,92,246,.18)" stroke="#a78bfa" stroke-width="1.5">
+                <!-- arm 234 x 240 (scale 0.68) -->
+                <rect x="17.4" y="104.8" width="159" height="20.4"/>
+                <rect x="84.8" y="33.4" width="20.4" height="163"/>
+                <!-- lamp mount 230 x 64 -->
+                <rect x="205.2" y="106.2" width="122.4" height="17.7"/>
+                <rect x="293.6" y="93.2" width="61.2" height="43.5"/>
+                <!-- bay 166 x 117 -->
+                <rect x="408.5" y="75.2" width="112.9" height="79.6" rx="3"/>
+              </g>
+              <g font-size="13" fill="#ffffff">
+                <text x="10" y="20">Panel arm</text>
+                <text x="195" y="20">Lamp mount</text>
+                <text x="380" y="20">Electronics bay</text>
+              </g>
+              <g font-size="12" fill="rgba(244,242,248,.55)">
+                <text x="10" y="222">234 × 240 mm</text>
+                <text x="195" y="222">230 × 64 mm</text>
+                <text x="380" y="222">166 × 117 mm</text>
+                <text x="10" y="248">Dashed square = 250 × 250 mm bed</text>
+              </g>
+            </svg>
+          </div>
+          <figcaption>The largest part uses 96% of the bed's width. No part needs a large-format printer.</figcaption>
+        </figure>
+
+        <ul class="parts reveal">
+          <li class="part">
+            <svg viewBox="0 0 72 56" aria-hidden="true" fill="none" stroke="#a78bfa" stroke-width="1.5"><circle cx="36" cy="28" r="17"/><circle cx="36" cy="28" r="10"/><rect x="52" y="25" width="7" height="6"/><rect x="52" y="25" width="7" height="6" transform="rotate(120 36 28)"/><rect x="52" y="25" width="7" height="6" transform="rotate(240 36 28)"/></svg>
+            <div><h3>Collar</h3><p>The ring around the pole. Three bolts at 120° make the 3-prong clamp.</p></div>
+            <div class="part__qty"><strong>×1</strong>134 × 145 mm</div>
+          </li>
+          <li class="part">
+            <svg viewBox="0 0 72 56" aria-hidden="true" fill="none" stroke="#a78bfa" stroke-width="1.5"><path d="M30 10 A18 18 0 0 1 30 46"/><path d="M36 13 A15 15 0 0 1 36 43"/><path d="M30 10 L36 13 M30 46 L36 43"/></svg>
+            <div><h3>Jaw</h3><p>Curved grip pads. Each bolt pushes one onto the pole, so it centres itself on 60–120 mm poles.</p></div>
+            <div class="part__qty"><strong>×3</strong>15 × 53 mm</div>
+          </li>
+          <li class="part">
+            <svg viewBox="0 0 72 56" aria-hidden="true" fill="none" stroke="#a78bfa" stroke-width="1.5"><rect x="16" y="8" width="40" height="38" rx="3"/><circle cx="26" cy="46" r="3"/><circle cx="36" cy="46" r="3"/><circle cx="46" cy="46" r="3"/></svg>
+            <div><h3>Electronics bay</h3><p>Sealed box for the battery, charge controller and sensor board. Three cable glands underneath.</p></div>
+            <div class="part__qty"><strong>×1</strong>166 × 117 mm</div>
+          </li>
+          <li class="part">
+            <svg viewBox="0 0 72 56" aria-hidden="true" fill="none" stroke="#a78bfa" stroke-width="1.5"><rect x="12" y="22" width="48" height="10" rx="2"/><circle cx="17" cy="27" r="1.5"/><circle cx="55" cy="27" r="1.5"/><rect x="40" y="25" width="6" height="4"/></svg>
+            <div><h3>Lid</h3><p>Security screws and a hidden magnet that tells the sensor if the box is opened.</p></div>
+            <div class="part__qty"><strong>×1</strong>166 × 111 mm</div>
+          </li>
+          <li class="part">
+            <svg viewBox="0 0 72 56" aria-hidden="true" fill="none" stroke="#a78bfa" stroke-width="1.5"><rect x="10" y="25" width="52" height="6"/><rect x="33" y="6" width="6" height="44"/></svg>
+            <div><h3>Panel arm</h3><p>Holds the solar panel at the right angle for your city. Default 15°.</p></div>
+            <div class="part__qty"><strong>×1</strong>234 × 240 mm</div>
+          </li>
+          <li class="part">
+            <svg viewBox="0 0 72 56" aria-hidden="true" fill="none" stroke="#a78bfa" stroke-width="1.5"><path d="M24 12 V42 H52"/><path d="M30 12 V36 H52"/><circle cx="40" cy="24" r="2.5"/></svg>
+            <div><h3>Panel bracket</h3><p>Corner clips that wrap the panel's aluminium frame and bolt to the arm.</p></div>
+            <div class="part__qty"><strong>×4</strong>50 × 50 mm</div>
+          </li>
+          <li class="part">
+            <svg viewBox="0 0 72 56" aria-hidden="true" fill="none" stroke="#a78bfa" stroke-width="1.5"><rect x="6" y="22" width="40" height="6"/><rect x="42" y="14" width="22" height="22" rx="2"/><circle cx="56" cy="19" r="1.5"/><circle cx="56" cy="31" r="1.5"/><circle cx="47" cy="25" r="3"/><path d="M28 30 l4 10"/></svg>
+            <div><h3>Lamp mount</h3><p>The 10 W lamp bolts on here and plugs into a waterproof socket. A small hood aims the light sensor at the lamp.</p></div>
+            <div class="part__qty"><strong>×1</strong>230 × 64 mm</div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Stages -->
+    <section class="section section--panel" aria-labelledby="stages-title">
+      <div class="container">
+        <div class="reveal">
+          <span class="eyebrow">How it goes together</span>
+          <h2 id="stages-title">Four stages</h2>
+          <p class="lede">Open a stage to see its steps.</p>
+        </div>
+        <div class="reveal">
+          <details class="stage">
+            <summary><span class="stage__num">1</span><span class="stage__title">Print<span class="stage__time">About 16 hours per light, in the workshop</span></span></summary>
+            <ol>
+              <li>Print all 12 pieces in ASA (PETG if ASA isn't available). PLA softens in Sahel and East African heat.</li>
+              <li>Use white or light grey filament, which keeps the battery box cooler.</li>
+              <li>Print the collar and jaws with 60% infill, because they carry the clamp load.</li>
+              <li>A five-printer workshop makes enough parts for about 7 lights a day.</li>
+            </ol>
+          </details>
+          <details class="stage">
+            <summary><span class="stage__num">2</span><span class="stage__title">Prepare<span class="stage__time">About 20 minutes, on the bench</span></span></summary>
+            <ol>
+              <li>Press the three M8 nuts into the collar and thread the bolts in from outside.</li>
+              <li>Screw the waterproof M12 lamp socket into the lamp mount.</li>
+              <li>Fit the battery, charge controller and sensor board into the bay, then fit the cable glands.</li>
+              <li>Flash and label the sensor board with the light's ID, for example RC-A-04.</li>
+            </ol>
+          </details>
+          <details class="stage">
+            <summary><span class="stage__num">3</span><span class="stage__title">Mount<span class="stage__time">About 25 minutes, on the pole, two people</span></span></summary>
+            <ol>
+              <li>Put the collar around the pole with the three jaws inside it.</li>
+              <li>Tighten the three bolts a third of a turn each, in turn, until firm (about 12 N·m).</li>
+              <li>Bolt on the panel arm, clip the four brackets to the panel, and face the panel south.</li>
+              <li>Bolt the bay and the lamp mount to the collar.</li>
+            </ol>
+          </details>
+          <details class="stage">
+            <summary><span class="stage__num">4</span><span class="stage__title">Wire and seal<span class="stage__time">About 20 minutes, then it joins the network</span></span></summary>
+            <ol>
+              <li>Connect the battery first, then the panel, then close the fuse.</li>
+              <li>Bolt the 10 W lamp to its mount and click in its waterproof plug.</li>
+              <li>Seat the rubber gasket and close the lid with the security screws.</li>
+              <li>Wait for the purple blink. On the dashboard, both neighbours should show the new light as reachable.</li>
+            </ol>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Settings + limits -->
+    <section class="section" aria-labelledby="settings-title">
+      <div class="container split">
+        <div class="reveal">
+          <span class="eyebrow">Print settings</span>
+          <h2 id="settings-title">Made for heat and sun</h2>
+          <div class="table-wrap">
+            <table>
+              <tbody>
+                <tr><td>Material</td><td>ASA, or PETG</td></tr>
+                <tr><td>Colour</td><td>White or light grey</td></tr>
+                <tr><td>Layer height</td><td>0.2 mm</td></tr>
+                <tr><td>Walls</td><td>4 perimeters</td></tr>
+                <tr><td>Infill</td><td>40% gyroid, 60% for collar and jaws</td></tr>
+                <tr><td>Filament</td><td>About 400 g per light (≈ $9)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="reveal">
+          <span class="eyebrow">Before a field pilot</span>
+          <h2>Three things to test</h2>
+          <ul class="checklist">
+            <li><span><strong>Clamp grip over time.</strong> Plastic slowly relaxes under load in heat. Re-tighten after one month, or add a steel band as backup.</span></li>
+            <li><span><strong>Heat inside the box.</strong> Keep the battery below 60 °C. Add a sun shade if readings run hot.</span></li>
+            <li><span><strong>Wind on the panel.</strong> The 30 W panel puts about 450 N on the arm at its 2,400 Pa rating. Load-test the arm and brackets to that.</span></li>
+          </ul>
+          <p class="notice">The full model is in <code>hardware/nura-case.jscad</code>. Open it at openjscad.xyz to change the pole size or panel angle and export each part.</p>
+          <div class="btn-row">
+            <a class="btn btn--primary" href="dashboard.html">See the network</a>
+            <a class="btn" href="nura.html">How Nura works</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div>
+        <a class="brand" href="index.html" aria-label="Nura home"><img src="assets/img/logo.svg" alt="" width="26" height="26">NURA</a>
+        <p class="footer__slogan">Light up the night. Created for the people.</p>
+      </div>
+      <ul class="footer__links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="ummah.html">Ummah</a></li>
+        <li><a href="nura.html">Nura</a></li>
+        <li><a href="implementation.html">Implementation</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+      </ul>
+      <p class="footer__legal">© <span id="year">2026</span> Nura prototype. Community-owned light infrastructure concept. All dashboard data is simulated.</p>
+    </div>
+  </footer>
+</body>
+</html>

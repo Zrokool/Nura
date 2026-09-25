@@ -1,0 +1,23 @@
+# Secrets and credentials
+.env
+.env.*
+*.key
+*.pem
+credentials
+credentials.*
+secrets
+secrets.*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Node / build output
+node_modules/
+*.log
+dist/
+
+# CAD exports (regenerate from hardware/nura-case.jscad)
+*.stl

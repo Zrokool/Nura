@@ -1,0 +1,194 @@
+[
+  {
+    "node_id": "RC-A-03",
+    "zone_id": "refugee",
+    "street_id": "RC-A",
+    "ts": "2026-09-24T21:40:00+02:00",
+    "seq": 48213,
+    "panel_v": 0.4,
+    "panel_ma": 0,
+    "battery_v": 13.02,
+    "battery_pct": 83,
+    "battery_ma": -805,
+    "load_ma": 780,
+    "lamp_cmd": "on",
+    "lamp_lux": 184,
+    "case_open": false,
+    "tilt_deg": 1,
+    "temp_c": 31,
+    "ping": {
+      "left": {
+        "id": "RC-A-02",
+        "ok": true,
+        "rssi_dbm": -91
+      },
+      "right": {
+        "id": "RC-A-04",
+        "ok": false,
+        "rssi_dbm": null
+      }
+    },
+    "history": {
+      "day_peak_panel_ma": [
+        1462,
+        1415,
+        1498
+      ],
+      "dawn_battery_pct": [
+        81,
+        84,
+        83
+      ],
+      "battery_v_max": 14.32,
+      "rssi_trend_dbm": [
+        -90,
+        -92,
+        -91
+      ]
+    }
+  },
+  {
+    "node_id": "RC-A-04",
+    "zone_id": "refugee",
+    "street_id": "RC-A",
+    "ts": "2026-09-24T21:37:00+02:00",
+    "seq": 47102,
+    "panel_v": 0.3,
+    "panel_ma": 0,
+    "battery_v": 11.42,
+    "battery_pct": 10,
+    "battery_ma": -798,
+    "load_ma": 772,
+    "lamp_cmd": "on",
+    "lamp_lux": 171,
+    "case_open": false,
+    "tilt_deg": 2,
+    "temp_c": 30,
+    "ping": {
+      "left": {
+        "id": "RC-A-03",
+        "ok": true,
+        "rssi_dbm": -92
+      },
+      "right": {
+        "id": "RC-A-05",
+        "ok": true,
+        "rssi_dbm": -95
+      }
+    },
+    "history": {
+      "day_peak_panel_ma": [
+        1420,
+        0,
+        0
+      ],
+      "dawn_battery_pct": [
+        81,
+        55,
+        10
+      ],
+      "battery_v_max": 14.28,
+      "rssi_trend_dbm": [
+        -93,
+        -94,
+        -92
+      ]
+    }
+  },
+  {
+    "node_id": "ED-B-05",
+    "zone_id": "education",
+    "street_id": "ED-B",
+    "ts": "2026-09-24T21:40:00+02:00",
+    "seq": 51877,
+    "panel_v": 0.5,
+    "panel_ma": 0,
+    "battery_v": 13.38,
+    "battery_pct": 99,
+    "battery_ma": -24,
+    "load_ma": 3,
+    "lamp_cmd": "on",
+    "lamp_lux": 0.4,
+    "case_open": false,
+    "tilt_deg": 0,
+    "temp_c": 29,
+    "ping": {
+      "left": {
+        "id": "ED-B-04",
+        "ok": true,
+        "rssi_dbm": -88
+      },
+      "right": {
+        "id": "ED-B-06",
+        "ok": true,
+        "rssi_dbm": -90
+      }
+    },
+    "history": {
+      "day_peak_panel_ma": [
+        1488,
+        1440,
+        1452
+      ],
+      "dawn_battery_pct": [
+        98,
+        99,
+        99
+      ],
+      "battery_v_max": 14.35,
+      "rssi_trend_dbm": [
+        -88,
+        -89,
+        -88
+      ]
+    }
+  },
+  {
+    "node_id": "HC-B-03",
+    "zone_id": "healthcare",
+    "street_id": "HC-B",
+    "ts": "2026-09-24T21:39:00+02:00",
+    "seq": 39920,
+    "panel_v": 0.2,
+    "panel_ma": 0,
+    "battery_v": 12.91,
+    "battery_pct": 78,
+    "battery_ma": 0,
+    "load_ma": 0,
+    "lamp_cmd": "on",
+    "lamp_lux": 162,
+    "case_open": true,
+    "tilt_deg": 41,
+    "temp_c": 32,
+    "ping": {
+      "left": {
+        "id": "HC-B-02",
+        "ok": true,
+        "rssi_dbm": -97
+      },
+      "right": {
+        "id": "HC-B-04",
+        "ok": false,
+        "rssi_dbm": null
+      }
+    },
+    "history": {
+      "day_peak_panel_ma": [
+        1502,
+        1466,
+        1480
+      ],
+      "dawn_battery_pct": [
+        80,
+        79,
+        78
+      ],
+      "battery_v_max": 14.3,
+      "rssi_trend_dbm": [
+        -96,
+        -97,
+        -97
+      ]
+    }
+  }
+]

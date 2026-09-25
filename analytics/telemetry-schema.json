@@ -1,0 +1,189 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nura.example/schemas/telemetry-v1.json",
+  "title": "Nura light-node telemetry packet (v1)",
+  "description": "Sent by every light node to its zone gateway every 60 s. Sensors: INA3221 (ch1 panel, ch2 battery, ch3 12 V lamp line), BPW34 photodiode, tilt switch, tamper reed switch. Fields map 1:1 to the dashboard simulation's telemetry() function.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "node_id",
+    "zone_id",
+    "street_id",
+    "ts",
+    "seq",
+    "panel_v",
+    "panel_ma",
+    "battery_v",
+    "battery_pct",
+    "battery_ma",
+    "load_ma",
+    "lamp_cmd",
+    "lamp_lux",
+    "case_open",
+    "tilt_deg",
+    "temp_c",
+    "ping"
+  ],
+  "properties": {
+    "node_id": {
+      "type": "string",
+      "pattern": "^[A-Z]{2}-[A-Z]-[0-9]{2}$",
+      "description": "Zone prefix, street letter, position, e.g. RC-A-04"
+    },
+    "zone_id": {
+      "type": "string",
+      "enum": [
+        "refugee",
+        "education",
+        "healthcare"
+      ]
+    },
+    "street_id": {
+      "type": "string",
+      "pattern": "^[A-Z]{2}-[A-Z]$"
+    },
+    "ts": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Node RTC time, synced from the gateway beacon"
+    },
+    "seq": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Monotonic packet counter; gaps = lost packets"
+    },
+    "panel_v": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 30,
+      "description": "INA3221 ch1 bus voltage. >8 V = day, <2 V = night"
+    },
+    "panel_ma": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 2000,
+      "description": "INA3221 ch1 (0.05 ohm) shunt current from the 30 W panel; daily peaks ~1,350-1,560 mA"
+    },
+    "battery_v": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 16
+    },
+    "battery_pct": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Estimated from voltage + coulomb counting on ch2"
+    },
+    "battery_ma": {
+      "type": "number",
+      "minimum": -3000,
+      "maximum": 3000,
+      "description": "INA3221 ch2 (0.05 ohm); + charging (up to ~2.1 A), - discharging"
+    },
+    "load_ma": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 2000,
+      "description": "INA3221 ch3 (0.1 ohm): 12 V lamp line via MOSFET. ~740-820 mA lit at 100%, ~390 mA at 50%, near 0 when dark"
+    },
+    "lamp_cmd": {
+      "type": "string",
+      "enum": [
+        "on",
+        "off",
+        "dim"
+      ]
+    },
+    "lamp_lux": {
+      "type": "number",
+      "minimum": 0,
+      "description": "BPW34 photodiode under the hood, facing the lit area"
+    },
+    "case_open": {
+      "type": "boolean",
+      "description": "Reed switch on the electronics-bay lid"
+    },
+    "tilt_deg": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 90
+    },
+    "temp_c": {
+      "type": "number",
+      "minimum": -20,
+      "maximum": 90,
+      "description": "Bay temperature (ESP32 internal or NTC)"
+    },
+    "ping": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "left": {
+          "$ref": "#/$defs/pingResult"
+        },
+        "right": {
+          "$ref": "#/$defs/pingResult"
+        }
+      },
+      "description": "Omit a side at a street end"
+    },
+    "history": {
+      "type": "object",
+      "description": "Rolling 3-day summary kept by the node; used by the AI diagnosis",
+      "properties": {
+        "day_peak_panel_ma": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "dawn_battery_pct": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "battery_v_max": {
+          "type": "number"
+        },
+        "rssi_trend_dbm": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        }
+      }
+    }
+  },
+  "$defs": {
+    "pingResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "ok"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "ok": {
+          "type": "boolean"
+        },
+        "rssi_dbm": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

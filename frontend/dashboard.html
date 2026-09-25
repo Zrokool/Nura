@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>Nura Dashboard | Sensor mapping</title>
+  <meta name="description" content="Simulated Nura control dashboard: neighbour-ping sensor mapping across refugee, education and healthcare zones, with AI-written repair emails.">
+  <meta name="theme-color" content="#000000">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/D-DIN-Bold.woff" as="font" type="font/woff" crossorigin>
+  <link rel="stylesheet" href="assets/css/nura.css">
+  <script src="assets/js/site.js" defer></script>
+  <script src="assets/js/dashboard.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="nav is-scrolled">
+    <div class="container nav__inner">
+      <a class="brand" href="index.html" aria-label="Nura home"><img src="assets/img/logo.svg" alt="" width="26" height="26">NURA</a>
+      <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu"><span></span><span></span><span></span></button>
+      <ul class="nav__links" id="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="ummah.html">Ummah</a></li>
+        <li><a href="nura.html">Nura</a></li>
+        <li><a href="implementation.html">Implementation</a></li>
+        <li><a href="dashboard.html" aria-current="page">Dashboard</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main id="main" class="dash">
+    <div class="container">
+      <div class="dash__head">
+        <div>
+          <span class="eyebrow">Nura control · Zone gateway GW-01</span>
+          <h1>Sensor mapping</h1>
+        </div>
+        <div class="dash__meta">
+          <span class="tag tag--purple"><span class="live-dot" aria-hidden="true"></span>Live · simulated</span>
+          <span class="tag" id="clock" aria-live="off">Local 21:40</span>
+          <span class="tag">Ollama · llama3.2:3b</span>
+          <button class="btn btn--sm btn--ghost" type="button" id="pause-btn" aria-pressed="false">Pause</button>
+        </div>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="Priority zones">
+        <button class="tab" role="tab" id="tab-refugee" aria-selected="true" aria-controls="zone-panel" data-zone="refugee">Refugee zone <span class="tab__badge" data-badge="refugee">0</span></button>
+        <button class="tab" role="tab" id="tab-education" aria-selected="false" aria-controls="zone-panel" data-zone="education" tabindex="-1">Education zone <span class="tab__badge" data-badge="education">0</span></button>
+        <button class="tab" role="tab" id="tab-healthcare" aria-selected="false" aria-controls="zone-panel" data-zone="healthcare" tabindex="-1">Healthcare zone <span class="tab__badge" data-badge="healthcare">0</span></button>
+      </div>
+
+      <div id="zone-panel" role="tabpanel" aria-labelledby="tab-refugee">
+        <div class="kpis" aria-label="Zone status summary">
+          <div class="kpi st-ok">
+            <div class="kpi__label"><span class="status-icon" aria-hidden="true">●</span>Lights on</div>
+            <div class="kpi__value" id="kpi-online">–</div>
+            <div class="kpi__sub" id="kpi-online-sub">of – nodes</div>
+          </div>
+          <div class="kpi st-critical">
+            <div class="kpi__label"><span class="status-icon" aria-hidden="true">✕</span>Outages</div>
+            <div class="kpi__value" id="kpi-out">–</div>
+            <div class="kpi__sub">Both neighbours lost it</div>
+          </div>
+          <div class="kpi st-serious">
+            <div class="kpi__label"><span class="status-icon" aria-hidden="true">!</span>Lamp faults</div>
+            <div class="kpi__value" id="kpi-lamp">–</div>
+            <div class="kpi__sub">Radio up, light dark</div>
+          </div>
+          <div class="kpi st-warn">
+            <div class="kpi__label"><span class="status-icon" aria-hidden="true"><span>~</span></span>Link faults</div>
+            <div class="kpi__value" id="kpi-link">–</div>
+            <div class="kpi__sub">One side can't ping</div>
+          </div>
+          <div class="kpi st-muted">
+            <div class="kpi__label"><span class="status-icon" aria-hidden="true">⚡</span>Avg battery</div>
+            <div class="kpi__value" id="kpi-battery">–</div>
+            <div class="kpi__sub">Reporting nodes</div>
+          </div>
+        </div>
+
+        <div class="dash__grid">
+          <div>
+            <section class="panel" aria-labelledby="zone-title">
+              <div class="panel__head">
+                <div>
+                  <h2 class="panel__title" id="zone-title">Zone</h2>
+                  <span class="kpi__sub" id="zone-sub"></span>
+                </div>
+                <div class="controls">
+                  <label class="visually-hidden" for="fault-type">Fault to simulate</label>
+                  <select class="select" id="fault-type">
+                    <option value="auto">Random fault</option>
+                    <option value="battery">Battery worn out</option>
+                    <option value="panel">Solar panel damage</option>
+                    <option value="controller">Charge controller</option>
+                    <option value="led">LED lamp</option>
+                    <option value="radio">Sensor radio</option>
+                    <option value="vandal">Vandalism / conflict</option>
+                    <option value="link">Link obstruction</option>
+                  </select>
+                  <button class="btn btn--sm btn--primary" type="button" id="break-btn">Simulate fault</button>
+                  <button class="btn btn--sm btn--ghost" type="button" id="repair-all-btn">Repair all</button>
+                </div>
+              </div>
+              <div class="map-wrap">
+                <svg id="map" viewBox="0 0 900 440" role="group" aria-label="Street map of streetlights. Select a light to inspect it, or a link line to obstruct it."></svg>
+              </div>
+              <div class="legend" aria-label="Legend">
+                <span class="legend__item st-ok"><span class="status-icon" aria-hidden="true">●</span>On · both neighbours reach it</span>
+                <span class="legend__item st-critical"><span class="status-icon" aria-hidden="true">✕</span>Outage</span>
+                <span class="legend__item st-serious"><span class="status-icon" aria-hidden="true">!</span>Lamp fault</span>
+                <span class="legend__item st-warn"><span class="status-icon" aria-hidden="true"><span>~</span></span>Link fault (dotted amber line)</span>
+                <span class="legend__item st-muted"><span class="status-icon" aria-hidden="true">?</span>Confirming (1–2 of 3 checks)</span>
+              </div>
+            </section>
+
+            <section class="panel" aria-labelledby="inspector-title">
+              <div class="panel__head">
+                <h2 class="panel__title" id="inspector-title">Selected light</h2>
+                <div class="controls">
+                  <button class="btn btn--sm btn--primary" type="button" id="break-selected-btn" disabled>Fault this light</button>
+                  <button class="btn btn--sm btn--ghost" type="button" id="repair-selected-btn" disabled>Repair</button>
+                </div>
+              </div>
+              <div class="panel__body">
+                <p class="empty" id="inspector-empty">Select a light on the map to see its telemetry and neighbour pings.</p>
+                <dl class="inspector" id="inspector" hidden></dl>
+              </div>
+            </section>
+
+            <section class="panel" aria-labelledby="log-title">
+              <div class="panel__head">
+                <h2 class="panel__title" id="log-title">Gateway event log</h2>
+                <label class="switch"><input type="checkbox" id="auto-events" checked> Random events &amp; auto-repair</label>
+              </div>
+              <ol class="log" id="log" aria-live="polite" aria-relevant="additions"></ol>
+            </section>
+          </div>
+
+          <div>
+            <section class="panel" aria-labelledby="incidents-title">
+              <div class="panel__head">
+                <h2 class="panel__title" id="incidents-title">Open incidents</h2>
+                <span class="kpi__sub" id="incident-count">0 open</span>
+              </div>
+              <ul class="incidents" id="incidents"></ul>
+              <p class="empty panel__body" id="incidents-empty">No open incidents in this zone. Every light is reachable.</p>
+            </section>
+
+            <section class="panel" aria-labelledby="ai-title">
+              <div class="panel__head">
+                <h2 class="panel__title" id="ai-title">AI dispatch</h2>
+                <span class="tag">Offline · on gateway</span>
+              </div>
+              <div class="panel__body">
+                <div class="ai-meta" id="ai-meta"></div>
+                <p class="empty" id="ai-empty">When an incident opens, the gateway model reads the light's last telemetry and writes a repair email for the zone's local fixer.</p>
+                <article class="email" id="email" hidden>
+                  <div class="email__head">
+                    <div><b>To</b><span id="email-to"></span></div>
+                    <div><b>From</b><span id="email-from"></span></div>
+                    <div><b>Subject</b><span class="email__subject" id="email-subject"></span></div>
+                  </div>
+                  <pre class="email__body" id="email-body"></pre>
+                </article>
+                <details class="disclosure" id="diag-details" hidden>
+                  <summary>Model output (JSON)</summary>
+                  <pre class="json" id="diag-json"></pre>
+                </details>
+                <details class="disclosure" id="prompt-details" hidden>
+                  <summary>Prompt sent to Ollama</summary>
+                  <pre class="json" id="prompt-text"></pre>
+                </details>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <details class="panel disclosure-panel" id="table-details">
+          <summary class="panel__head"><span class="panel__title">Table view · all lights in zone</span></summary>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th scope="col">Light</th><th scope="col">Street</th><th scope="col">Status</th><th scope="col" class="num">Battery</th><th scope="col" class="num">Charge W</th><th scope="col">Left ping</th><th scope="col">Right ping</th><th scope="col">Heartbeat</th></tr>
+              </thead>
+              <tbody id="node-table"></tbody>
+            </table>
+          </div>
+        </details>
+      </div>
+
+      <p class="notice">Prototype. All lights, telemetry and AI output on this page are simulated in your browser. Nothing is sent anywhere. In a deployment, detection runs on the zone gateway, and the email is written by a local Ollama model (see <code>ai/</code> and <code>docs/Nebo.md</code> in the repository). Zone names are illustrative.</p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div>
+        <a class="brand" href="index.html" aria-label="Nura home"><img src="assets/img/logo.svg" alt="" width="26" height="26">NURA</a>
+        <p class="footer__slogan">Light up the night. Created for the people.</p>
+      </div>
+      <ul class="footer__links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="ummah.html">Ummah</a></li>
+        <li><a href="nura.html">Nura</a></li>
+        <li><a href="implementation.html">Implementation</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+      </ul>
+      <p class="footer__legal">© <span id="year">2026</span> Nura prototype. Community-owned light infrastructure concept. All dashboard data is simulated.</p>
+    </div>
+  </footer>
+</body>
+</html>
