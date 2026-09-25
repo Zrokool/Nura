@@ -1985,3 +1985,12 @@ td.num {
     grid-template-columns: 1fr 1fr;
   }
 }
+
+.sources a {
+  color: var(--text-2);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.sources a:hover {
+  color: var(--white);
+}

@@ -2,7 +2,7 @@
 
 **Light up the night. Created for the people.**
 
-Nura is a prototype of city-owned, solar-powered streetlights for the Sahel and East Africa (Sudan and Somalia). Each light watches its left and right neighbours. When one goes dark, an offline Ollama model on the zone gateway writes a local fixer a plain-language repair email with the likely cause, the tools to bring and step-by-step instructions.
+Nura is a prototype of city-owned, solar-powered streetlights for the Sahel and East Africa (Sudan and Somalia). Each light watches its left and right neighbours. When one goes dark, simple rules confirm it, and an offline Ollama model on a solar-powered neighbourhood computer wakes up just long enough to write a local fixer a plain-language repair email with the likely cause, the tools to bring and step-by-step instructions.
 
 ## Repository map
 
@@ -38,20 +38,13 @@ Deep-link a dashboard zone: `dashboard.html#refugee`, `#education` or `#healthca
 
 ## Deploy to GitHub Pages
 
-The site lives in `frontend/`, so it is published by a GitHub Actions workflow instead of "Deploy from a branch".
+Live site: **https://zrokool.github.io/Nura/**
 
-1. Create a **public** repository on GitHub (for example `nura`).
-2. Push this folder:
-   ```bash
-   git init && git add . && git commit -m "Nura prototype"
-   git branch -M main
-   git remote add origin https://github.com/<your-username>/nura.git
-   git push -u origin main
-   ```
-3. On GitHub, open **Settings → Pages → Build and deployment**, and set **Source = GitHub Actions**. This is the one change from `Deployment.md` step 4.
-4. The workflow `.github/workflows/pages.yml` runs on every push to `main`. After 1–5 minutes the site is live at `https://<your-username>.github.io/nura/`.
+1. **Settings → Pages → Build and deployment:** Source = **Deploy from a branch**, Branch = `main`, folder = `/ (root)`. Leave **Custom domain** empty.
+2. The root `index.html` redirects to `frontend/`, and the root `.nojekyll` stops GitHub from turning the README into the home page.
+3. Every push to `main` republishes the site in about a minute.
 
-All links and assets are relative, so the `/nura/` sub-path works without changes.
+`.github/workflows/pages.yml` is **manual only**. Running it on every push would race the branch deploy and break the `/frontend/` links. Use it only if you switch Source to **GitHub Actions**, and delete the root redirect if you do.
 
 ## Security
 

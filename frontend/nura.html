@@ -134,7 +134,7 @@
         <div class="reveal">
           <span class="eyebrow">AI that dispatches</span>
           <h2 id="ai-title">From dark pole to repair email</h2>
-          <p class="lede">A free, open-source Ollama model runs on a small computer at the zone gateway, fully offline. Fixed rules decide <em>whether</em> a light is out. The model explains <em>why</em>, and writes the local fixer a plain-language repair guide.</p>
+          <p class="lede">A free, open-source Ollama model runs offline on one small solar-powered computer per neighbourhood. It isn't running all the time: it wakes only when a light breaks, works for about a minute, then sleeps. Fixed rules decide <em>whether</em> a light is out. The model explains <em>why</em> and writes the local fixer a plain-language repair guide. If the AI is ever unavailable, the same guide goes out from a ready-made template, so repairs never wait on it.</p>
         </div>
         <ol class="steps reveal">
           <li><h3>Ping</h3><p>Every 60 s, each node pings its left and right neighbours and reports its battery, charge current and light level.</p></li>
@@ -244,7 +244,7 @@
             </dl>
           </article>
         </div>
-        <p class="notice reveal">Nothing else is needed. The solar panel doubles as the dawn and dusk switch: above about 8 V it's day, below about 2 V it's night. A tilt switch and a lid switch report tampering. The reasons for not using a basic light sensor or a sun tracker are in <code>docs/Nebo.md</code> §3.4.</p>
+        <p class="notice reveal">Nothing else is needed. The solar panel doubles as the dawn and dusk switch: above about 8 V it's day, below about 2 V it's night. A tilt switch and a lid switch report tampering.</p>
       </div>
     </section>
 
@@ -259,7 +259,7 @@
         <div class="reveal">
           <ul class="checklist">
             <li><span><strong>Open hardware:</strong> the parts list and case design are public, so any workshop can build a node.</span></li>
-            <li><span><strong>Offline AI:</strong> Ollama runs on the zone gateway, so there is no subscription and no data leaves the city.</span></li>
+            <li><span><strong>AI only when needed:</strong> one solar-powered computer per neighbourhood runs the AI offline, and only when a light breaks. No subscription and no cloud bill, and only the repair message itself leaves the neighbourhood.</span></li>
             <li><span><strong>Local fixers:</strong> repair guides are written for a trained resident with hand tools, not a specialist engineer.</span></li>
             <li><span><strong>Priority zones:</strong> refugee camps, school routes and clinic roads get lit and repaired first.</span></li>
           </ul>
@@ -303,7 +303,7 @@
               <text x="275" y="294">Ø 60–120 MM POLE</text>
             </g>
           </svg>
-          <figcaption>Illustration of the parametric model in <code>hardware/nura-case.jscad</code>. You can preview it at openjscad.xyz.</figcaption>
+          <figcaption>Illustration of the 3D-printed case. Pole size, panel size and tilt are all adjustable before printing.</figcaption>
         </figure>
         <div class="reveal">
           <span class="eyebrow">The printed case</span>

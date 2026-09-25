@@ -27,7 +27,7 @@
     refugee: {
       id: 'refugee',
       title: 'Refugee zone',
-      place: 'Gedaref transit camp · Block C',
+      place: 'Mogadishu · IDP settlement, Block C',
       priority: 'HIGH',
       why: 'This route links shelters to the water point, latrines and the clinic tent. Women and children use it after dark.',
       fixer: { name: 'Block C maintenance committee', email: 'fixers.blockc@nura-city.example' },

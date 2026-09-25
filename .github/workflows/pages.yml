@@ -1,11 +1,10 @@
 name: Deploy Nura site to GitHub Pages
 
+# Manual only. The live site is published by Settings -> Pages -> "Deploy from a branch"
+# (main, / root), with the root index.html redirecting to frontend/. Running this
+# workflow on every push would race that deploy and break the /frontend/ links.
+# Use it only if you switch Pages Source to "GitHub Actions" (then delete the root redirect).
 on:
-  push:
-    branches: [main]
-    paths:
-      - "frontend/**"
-      - ".github/workflows/pages.yml"
   workflow_dispatch:
 
 permissions:

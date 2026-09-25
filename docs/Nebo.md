@@ -299,6 +299,8 @@ A conventional grid-tied streetlight, with trenching, cabling and grid connectio
 
 ## 12. Logic-conflict review of the vision brief
 
+> `Vison.md` was the original brief. It has since been removed from the repository; the rows below keep its name so each fix can be traced.
+
 I checked `Vison.md`, `solution.md` and `Deployment.md` for contradictions and gaps. Each item below has a resolution that is already applied in this repository.
 
 | # | Conflict / gap | Where | Resolution |
